@@ -4,6 +4,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use common\models\UserInfo;
 
 /**
  * Signup form
@@ -54,7 +55,15 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
-        return $user->save() && $this->sendEmail($user);
+
+        if($user->save()) {
+            $profile = new UserInfo();
+            $profile->name = $user->username;
+            $profile->user_id = $user->id;
+            $profile->created_at = $user->created_at;
+            $profile->updated_at = $user->updated_at;
+        }
+        return $profile->save() && $this->sendEmail($user);
 
     }
 
