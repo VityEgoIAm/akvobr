@@ -83,8 +83,8 @@ class ProfileController extends Controller
      */
     protected function findModel()
     {
-        $id = Yii::$app->user->id;
-        if (($model = UserInfo::findOne($id)) !== null) {
+        $user_id = Yii::$app->user->id;
+        if (($model = UserInfo::findOne(['user_id' => $user_id])) !== null) {
             return $model;
         }
 
