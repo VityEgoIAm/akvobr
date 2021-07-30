@@ -13,38 +13,9 @@
                 [
                     'options' => ['class' => 'nav nav-pills nav-sidebar flex-column', 'data-widget' => 'treeview'],
                     'items' => [
-                        ['label' => 'Menu Yii2', 'header' => true],
-                        ['label' => 'Gii', 'iconType' => 'far', 'icon' => 'file-code', 'url' => ['/gii']],
-                        ['label' => 'Debug', 'icon' => 'tachometer-alt', 'url' => ['/debug']],
-                        ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                        [
-                            'label' => 'Some tools',
-                            'icon' => 'share',
-                            'url' => '#',
-                            'items' => [
-                                ['label' => 'Gii', 'iconType' => 'far', 'icon' => 'file-code', 'url' => ['/gii'],],
-                                ['label' => 'Debug', 'icon' => 'tachometer-alt', 'url' => ['/debug'],],
-                                [
-                                    'label' => 'Level One',
-                                    'iconType' => 'far',
-                                    'icon' => 'circle',
-                                    'url' => '#',
-                                    'items' => [
-                                        ['label' => 'Level Two', 'iconType' => 'far', 'icon' => 'dot-circle', 'url' => '#',],
-                                        [
-                                            'label' => 'Level Two',
-                                            'iconType' => 'far',
-                                            'icon' => 'dot-circle',
-                                            'url' => '#',
-                                            'items' => [
-                                                ['label' => 'Level Three', 'icon' => 'dot-circle', 'url' => '#',],
-                                                ['label' => 'Level Three', 'icon' => 'dot-circle', 'url' => '#',],
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
+                        ['label' => 'Меню', 'header' => true],
+                        ['label' => 'Посты', 'icon' => 'list-alt', 'url' => ['/post']],
+                        
                     ],
                 ]
             ) ?>
