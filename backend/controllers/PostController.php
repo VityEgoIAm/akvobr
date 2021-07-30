@@ -79,8 +79,17 @@ class PostController extends Controller
         $model = new Post();
         $modelTag = new TagForm;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $image = UploadedFile::getInstance($model, 'image');
+            if (!is_null($image)) {
+                $imageName = $image->baseName . '.' . $image->extension;
+                $model->photo = Yii::getAlias('@frontend/web/uploads/post/') . $imageName;
+                $image->saveAs($model->photo);
+                $model->photo = '/uploads/post/' . $imageName;
+            }
+            if ($model->save()) { 
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [

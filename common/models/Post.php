@@ -104,7 +104,7 @@ class Post extends \yii\db\ActiveRecord
     public function getPreview()
     {
         if (!empty($this->photo))
-            return "<img src='$this->photo' width='auto' height='100%'>";
+            return "<img src='$this->photo' width='100%' height='100%'>";
 
         return "";
     }
