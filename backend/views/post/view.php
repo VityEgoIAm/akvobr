@@ -32,6 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value'=> (!empty($model->photo)) ? $model->photo : NULL,
                     'format' => ['image',['width'=>'100','height'=>'100']],
                 ],
+                'tagValues',
             ],
         ]) ?>
     </div>

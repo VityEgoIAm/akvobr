@@ -65,6 +65,7 @@ class Post extends \yii\db\ActiveRecord
             'body' => 'Текст',
             'photo' => 'Фото',
             'image' => 'Изображение',
+            'tagValues' => 'Теги',
         ];
     }
 

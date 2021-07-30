@@ -4,7 +4,9 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Post;
+use common\models\Tag;
 use backend\models\PostSearch;
+use backend\models\TagForm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -65,6 +67,7 @@ class PostController extends Controller
     public function actionCreate()
     {
         $model = new Post();
+        $modelTag = new TagForm;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -72,6 +75,7 @@ class PostController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelTag' => $modelTag,
         ]);
     }
 
@@ -84,6 +88,7 @@ class PostController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelTag = new TagForm;
 
         if ($model->load(Yii::$app->request->post())) {
             $image = UploadedFile::getInstance($model, 'image');
@@ -100,6 +105,7 @@ class PostController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'modelTag' => $modelTag,
         ]);
     }
 
@@ -126,6 +132,27 @@ class PostController extends Controller
     {
         if (($model = Post::findOne($id)) !== null) {
             return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * Добавление нового тега
+     */
+    public function actionTagCreate()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        if(Yii::$app->request->isAjax && $tagForm = Yii::$app->request->post('TagForm')) {
+            $model = new Tag();
+            $model->name = $tagForm['name'];
+
+            if($model->save()) {
+                return [
+                    'msg' => 'Тег успешно добавлен, изменения вступят после перезагрузки страницы.'
+                ];
+            }
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

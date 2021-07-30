@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use common\models\Tag;
+use yii\bootstrap4\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Post */
@@ -14,6 +15,29 @@ $data = [];
 $tagList = Tag::find()->all();
 
 $data = ArrayHelper::map($tagList, 'name', 'name');
+
+$this->registerJs( <<< EOT_JS_CODE
+
+$("#tag-form").submit( function(e){
+    var form = $(this);
+    $.ajax({
+            url    : 'tag-create',
+            type   : 'POST',
+            data   : form.serialize(),
+            success: function (response) 
+            {                  
+                $("#modal-alert").html('<div class="alert alert-success" role="alert">' + response.msg + '</div>');
+            },
+            error  : function (e) 
+            {
+                $("#modal-alert").html('<div class="alert alert-danger" role="alert">При сохранении произошла ошибка, свяжитесь с администратором ресурса.</div>');
+            }
+    });
+    return false;        
+})
+
+EOT_JS_CODE
+);
 ?>
 
 <div class="post-form box box-primary">
@@ -39,8 +63,51 @@ $data = ArrayHelper::map($tagList, 'name', 'name');
         ]); ?>
 
     </div>
+
+    <div class="row">
+        <div class="col-10">
+                <?=  $form->field($model, 'tagValues')->widget(Select2::classname(), [
+                    'data' => $data,
+                    'options' => [
+                        'placeholder' => 'Выбрать теги ...', 
+                        'multiple' => true,
+                        'value' => $model->getTagValues(true)
+                    ],
+                    'showToggleAll' => false,
+                    'pluginOptions' => [
+                        'tags' => true,
+                        'tokenSeparators' => [',', ' '],
+                        'maximumSelectionLength' => 5
+                    ],
+                ])->label('Теги'); ?>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#tag-modal">Добавить тег</button>
+        </div>
+    </div>
     <div class="box-footer">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success btn-flat']) ?>
     </div>
     <?php ActiveForm::end(); ?>
+    <?php
+        Modal::begin([
+            'id' => 'tag-modal',
+            'title' => 'Новый тег',
+        ]);
+
+        echo '<div id="modal-alert"></div>';
+
+        $tagForm = ActiveForm::begin([
+            'id'=> 'tag-form',
+            'enableAjaxValidation' => true,
+        ]);
+
+        echo $tagForm->field($modelTag, 'name');
+
+        echo Html::submitButton('Отправить', ['class' => 'btn btn-success']);
+
+        ActiveForm::end();
+                
+        Modal::end();
+    ?>
 </div>
