@@ -69,6 +69,19 @@ class Post extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeDelete() {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+        $file = Yii::getAlias('@frontend/web'.$this->photo);
+        if (is_file($file)) {
+            if (unlink($file)) {
+                return true;
+            }
+        }
+        return true;
+    }
+
     public function transactions()
     {
         return [
