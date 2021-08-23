@@ -45,6 +45,7 @@ class UserInfo extends \yii\db\ActiveRecord
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['image'], 'file', 'extensions'=>'jpg, gif, png'],
             [['image'], 'file', 'maxSize'=>'100000'],
+            [['birth_date'], 'date', 'format' => 'yyyy-M-d'],
         ];
     }
 
